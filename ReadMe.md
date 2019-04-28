@@ -4,4 +4,8 @@
 
 CCFM was originally developed by LZN to conduct prescribed convective heating forcing experiment in 2015. Then, he found that the similar technique was general enough to be applicable in a wide variety of other questions by modifying the model prognostic physical tendencies. Some complex jobs e.g. Nudging, can also be implemented with the similar basis. Therefore, he decided to develop a common module embedded into the CESM architecture, which can be simply used by other scholars to conduct related experiments.
 
+## Installation
+
+CCFM is embedded into the CESM source code, to install the current release of CCFM, you need first download this repo to your targeted machine.
+
 Last Updated: April 29, 2019
