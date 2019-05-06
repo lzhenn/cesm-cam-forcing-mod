@@ -662,6 +662,10 @@ subroutine phys_init( phys_state, phys_tend, pbuf2d, cam_out )
     use tropopause,         only: tropopause_init
     use solar_data,         only: solar_data_init
     use rad_solar_var,      only: rad_solar_var_init
+! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_INIT**
+    use cam_forcing_mod,    only: cam_forc_init
+! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_INIT**
+
 
     ! Input/output arguments
     type(physics_state), pointer       :: phys_state(:)
@@ -819,6 +823,9 @@ subroutine phys_init( phys_state, phys_tend, pbuf2d, cam_out )
     prec_sh_idx  = pbuf_get_index('PREC_SH')
     snow_sh_idx  = pbuf_get_index('SNOW_SH')
 
+! **LZN MOD: CALL CAM_FORC_INIT**
+    call cam_forc_init()
+! **LZN MOD: CALL CAM_FORC_INIT**
 end subroutine phys_init
 
   !
