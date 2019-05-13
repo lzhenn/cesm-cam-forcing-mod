@@ -1,0 +1,19 @@
+! Users should add all user specific namelist changes below in the form of 
+! namelist_var = new_namelist_value 
+
+
+forcing_file_loc        = '/users/yangsong3/zwx/CESM/heatforc.nc'
+
+forcing_shf_flag        = .true.
+forcing_lhf_flag        = .false.
+forcing_utend_flag      = .false.
+forcing_vtend_flag      = .false.
+forcing_ttend_flag      = .false.
+
+forcing_process         = 'vert_diff_flx'
+forcing_method          = 'imposing'
+forcing_time_res        = 'monthly'
+forcing_timeframe       = 12
+forcing_start_day       = 1
+
+forcing_relax_time      = 86400

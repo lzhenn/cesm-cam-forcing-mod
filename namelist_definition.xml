@@ -5460,10 +5460,73 @@ Default: false
 </entry>
 
 <entry id="forcing_process" type="char*32" category="forcing_mod"
-       group="cam_forcing_mod" valid_values="deep_conv,shallow_conv" >
+       group="cam_forcing_mod" valid_values="convect_deep,convect_shallow,vert_diff_tend,vert_diff_flx,micro_phy" >
 Define which process will be executed in the CAM physics runtime.       
-Default: 'deep_conv'
+Default: 'convect_deep'
 </entry>
 
+<entry id="forcing_method" type="char*32" category="forcing_mod"
+       group="cam_forcing_mod" valid_values="replacing,imposing,nudging" >
+Define the mothod to impose the forcing: replacing will simply replace the model generated
+physical tendencies by the prescribed forcing fields. Imposing will simply add the forcing
+fields to the model generated tendencies. Nudging will relax the model state to the prescribed
+observed fields.
+Default: 'replacing'
+</entry>
+
+<entry id="forcing_utend_flag" type="logical"  category="forcing_mod"
+       group="cam_forcing_mod" valid_values="">
+Whether U wind (tendency) is the forcing field.
+Default: FALSE 
+</entry>
+
+<entry id="forcing_vtend_flag" type="logical"  category="forcing_mod"
+       group="cam_forcing_mod" valid_values="">
+Whether V wind (tendency) is the forcing field.
+Default: FALSE 
+</entry>
+
+<entry id="forcing_ttend_flag" type="logical"  category="forcing_mod"
+       group="cam_forcing_mod" valid_values="">
+Whether T wind (tendency) is the forcing field.
+Default: FALSE 
+</entry>
+
+<entry id="forcing_shf_flag" type="logical"  category="forcing_mod"
+       group="cam_forcing_mod" valid_values="">
+Whether sensible heat flux is the forcing field.
+Default: FALSE 
+</entry>
+
+<entry id="forcing_lhf_flag" type="logical"  category="forcing_mod"
+       group="cam_forcing_mod" valid_values="">
+Whether latent heat flux is the forcing field.
+Default: FALSE 
+</entry>
+
+<entry id="forcing_time_res" type="char*32" category="forcing_mod"
+       group="cam_forcing_mod" valid_values="daily,monthly" >
+The time resolution of forcing data, daily or monthly.
+Default: 'monthly'
+</entry>
+
+<entry id="forcing_timeframe" type="integer" category="forcing_mod"
+       group="cam_forcing_mod" valid_values="" >
+number of timeframes in the forcing varibale.
+Default: 12 
+</entry>
+
+<entry id="forcing_start_day" type="integer" category="forcing_mod"
+       group="cam_forcing_mod" valid_values="" >
+If $forcing_time_res$ is set to "daily", this namelist variable
+will define the fisrt day to execute cam_forcing.
+Default: 1
+</entry>
+
+<entry id="forcing_relax_time" type="integer" category="forcing_mod"
+       group="cam_forcing_mod" valid_values="" >
+       Relaxation time in seconds, equal to 1/G in nudging equation. See http://www.ukca.ac.uk/wiki/index.php/Nudging.       
+Default: 86400
+</entry>
 
 </namelist_definition>

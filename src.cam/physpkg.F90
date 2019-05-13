@@ -129,6 +129,9 @@ subroutine phys_register
     use cam_diagnostics,    only: diag_register
     use cloud_diagnostics,  only: cloud_diagnostics_register
     use physics_buffer,     only: pbuf_add_field, dtype_r8
+! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_INIT**
+    use cam_forcing_mod,    only: cam_forc_reg
+! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_INIT**
 
     implicit none
     !---------------------------Local variables-----------------------------
@@ -277,6 +280,10 @@ subroutine phys_register
     call cnst_chk_dim()
 
     ! ***NOTE*** No registering constituents after the call to cnst_chk_dim.
+
+    ! **LZN MOD: CALL CAM_FORC_INIT**
+    call cam_forc_reg()
+    ! **LZN MOD: CALL CAM_FORC_INIT**
 
 end subroutine phys_register
 
@@ -1251,6 +1258,11 @@ subroutine tphysac (ztodt,   cam_in,  &
     use phys_control,       only: phys_do_flux_avg, waccmx_is
     use flux_avg,           only: flux_avg_run
 
+! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_EXE**
+    use cam_forcing_mod,    only: cam_forc_exe, cam_forc_debug
+! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_EXE**
+
+
     implicit none
 
     !
@@ -1428,17 +1440,32 @@ subroutine tphysac (ztodt,   cam_in,  &
     else
 
        call t_startf('vertical_diffusion_tend')
+       
+       !-------------------------------------------------------------
+       ! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_EXE FLX MAKER!**
+       call cam_forc_debug('vert_diff_flx', ptend, state, lchnk, .false., cam_in)
+       call cam_forc_exe('vert_diff_flx', ptend, state, lchnk, cam_in)
+       call cam_forc_debug('vert_diff_flx', ptend, state, lchnk, .true., cam_in)
+       ! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_EXE FLX MAKER!**
+       !-------------------------------------------------------------
+       
        call vertical_diffusion_tend (ztodt ,state ,cam_in%wsx, cam_in%wsy,   &
             cam_in%shf     ,cam_in%cflx     ,surfric  ,obklen   ,ptend    ,ast    ,&
             cam_in%ocnfrac  , cam_in%landfrac ,        &
             sgh30    ,pbuf )
 
-    !------------------------------------------
-    ! Call major diffusion for extended model
-    !------------------------------------------
-    if ( waccmx_is('ionosphere') .or. waccmx_is('neutral') ) then
-       call mspd_intr (ztodt    ,state    ,ptend)
-    endif
+       !-------------------------------------------------------------
+       ! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_EXE TENDENCY MAKER!**
+       call cam_forc_exe('vert_diff_tend', ptend, state, lchnk, cam_in)
+       ! **LZN MOD: USE CAM_FORC_MOD.CAM_FORC_EXE TENDENCY MAKER!**
+       !-------------------------------------------------------------
+
+       !------------------------------------------
+       ! Call major diffusion for extended model
+       !------------------------------------------
+       if ( waccmx_is('ionosphere') .or. waccmx_is('neutral') ) then
+          call mspd_intr (ztodt    ,state    ,ptend)
+       endif
 
        call physics_update(state, ptend, ztodt, tend)
        call t_stopf ('vertical_diffusion_tend')
