@@ -33,4 +33,6 @@ cp -r src.cam $YOUR_CASE_ROOT/SourceMods/
 
 ## Usage
 
+* `cam_forcing_mod.F90` is the key module that define, register, initial and execute the forcing into the CAM workflow.
+
 Last Updated: April 30, 2019
